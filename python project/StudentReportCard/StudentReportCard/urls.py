@@ -21,6 +21,6 @@ from django.conf.urls import include,url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #url(r'^StudentInfo/',include('StudentInfo.urls')),
-    #url(r'^AdminInfo/',include('AdminInfo.urls')),
+    #url(r'^StudentInfo/$',include('StudentInfo.urls')),
+    url(r'^AdminInfo/',include('AdminInfo.urls')),
 ]

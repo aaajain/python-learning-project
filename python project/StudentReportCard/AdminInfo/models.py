@@ -9,7 +9,7 @@ class StudentDetail(models.Model):
     created_at= models.DateTimeField(default=datetime.now,blank=True)
 
     def __str__(self):
-        return self.title
+        return self.StudentName + self.Course
 
     class Meta:
         verbose_name_plural="StudentDetail"
