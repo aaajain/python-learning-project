@@ -1,0 +1,9 @@
+
+
+<html>
+    <body>
+        <form action= {% url ' .views getStudentsRecords' %} method="POST"> {% csrf_token %}
+            <input type="submit" name="submit" value="Login">
+        </form>
+    </body>
+</html>

@@ -1,0 +1,26 @@
+<html>
+    <head>
+        
+    </head>
+    <body>
+       <center> <h1>Hello Admin</h1>
+        <table border="1">
+            <th>Student Id</th>
+            <th>Student Name</th>
+            <th>Student Course</th>
+            <th>Student Phone Number</th>
+            
+            {% for student_records in student_records%}
+            <tr>
+                <td>{{student_records.id}}</td>  
+                <td>{{student_records.StudentName}}</td>  
+                <td>{{student_records.Course}}</td>  
+                <td>{{student_records.PhoneNumber}}</td>  
+                
+            </tr>
+            {% endfor %}
+            
+        </table>
+    </center>
+    </body>
+</html>

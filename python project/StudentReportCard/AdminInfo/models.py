@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 
 # Create your models here.
+# Create your models here.
 class StudentDetail(models.Model):
     StudentName=models.CharField(max_length=200)
     Course= models.CharField(max_length=200)
