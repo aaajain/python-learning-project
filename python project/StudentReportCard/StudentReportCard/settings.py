@@ -26,11 +26,48 @@ SECRET_KEY = 'ea8j!ndh*swo4)r()q&p7l8@&03)wdj6ev3%&)u%$2-qo*r!5_'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
+LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
+import logging.config
+LOGGING_CONFIG = None
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'detail': {
+            # exact format is not important, this is the minimum information
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+        }
+    },
+    'handlers': {
+        'file': {
+            'level':'ERROR',
+            'class':'logging.FileHandler',
+            'filename':'sample.log',
+            'formatter': 'detail'
+            },
+        # Add Handler for Sentry for `warning` and above
+        'sentry': {
+            'level': 'WARNING',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler'
+        }
+    },
+    'loggers': {
+    # root loggery,,
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['file', 'sentry'],
+            'propagate': False
+        },
+        'StudentReportCard': {
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    }
+})
 # Application definition
 
 INSTALLED_APPS = [
+    'raven.contrib.django',
     'StudentInfo',
     'AdminInfo',
     'django.contrib.admin',

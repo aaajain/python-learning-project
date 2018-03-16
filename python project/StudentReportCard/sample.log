@@ -1,0 +1,12 @@
+2018-03-16 19:16:25,514 django.request ERROR    Internal Server Error: /AdminInfo/getStudentsRecords/
+Traceback (most recent call last):
+  File "C:\Users\krandhir\AppData\Local\Programs\Python\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "C:\Users\krandhir\AppData\Local\Programs\Python\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\krandhir\AppData\Local\Programs\Python\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\python-learning-project\python project\StudentReportCard\AdminInfo\views.py", line 11, in getStudentsRecords
+    bjsbfjksnjk
+NameError: name 'bjsbfjksnjk' is not defined
+2018-03-16 19:16:25,734 django.server ERROR    "GET /AdminInfo/getStudentsRecords/ HTTP/1.1" 500 68157
