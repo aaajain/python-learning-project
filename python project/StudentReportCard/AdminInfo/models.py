@@ -8,9 +8,9 @@ class StudentDetail(models.Model):
     Course= models.CharField(max_length=200)
     PhoneNumber= models.IntegerField()
     created_at= models.DateTimeField(default=datetime.now,blank=True)
-
-    def __str__(self):
-        return self.StudentName + self.Course
+    username=models.CharField(max_length=200,blank=True,null=True)
+    password= models.CharField(max_length=200,blank=True,null=True)
+    status= models.NullBooleanField(blank=True,null=True,default=None)
 
     class Meta:
         verbose_name_plural="StudentDetail"
@@ -22,10 +22,7 @@ class SubjectDetail(models.Model):
     Angular=models.IntegerField()
     Node=models.IntegerField()
     Python=models.IntegerField()
-    TotalMarks= models.IntegerField(max_length=3)
-
-    def __str__(self):
-        return self.title
+    TotalMarks= models.IntegerField()
 
     class Meta:
         verbose_name_plural="SubjectDetail"

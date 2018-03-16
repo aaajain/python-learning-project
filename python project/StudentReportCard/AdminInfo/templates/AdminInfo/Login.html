@@ -1,8 +1,10 @@
 
 
 <html>
-    <body>
+    <body align="center">
         <form action= {% url 'getStudentsRecords' %} method="POST"> {% csrf_token %}
+            Username: <input type="text" name="username"><br><br>
+            Password: <input type="password" name="password"><br><br>
             <input type="submit" name="submit" value="Login">
         </form>
     </body>
