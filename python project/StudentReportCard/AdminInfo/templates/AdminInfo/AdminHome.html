@@ -9,15 +9,31 @@
             <th>Student Name</th>
             <th>Student Course</th>
             <th>Student Phone Number</th>
-            
+            <th>Java</th>
+            <th>CSharp</th>
+            <th>Angular</th>
+            <th>Node</th>
+            <th>Python</th>
+            <th>Total Marks</th>
+
             {% for student_records in student_records%}
             <tr>
                 <td>{{student_records.id}}</td>  
                 <td>{{student_records.StudentName}}</td>  
                 <td>{{student_records.Course}}</td>  
-                <td>{{student_records.PhoneNumber}}</td>  
+                <td>{{student_records.PhoneNumber}}</td> 
                 
-            </tr>
+                {% for subject in subject_records %}
+                
+                    {% if subject.StudentDetailId.id == student_records.id %}
+                    <td> {{subject.Java}} </td>
+                    <td> {{subject.CSharp}} </td>
+                    <td> {{subject.Angular}} </td>
+                    <td> {{subject.Node}} </td>
+                    <td> {{subject.Python}} </td>
+                    <td> {{subject.TotalMarks}} </td>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
             
         </table>
