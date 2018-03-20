@@ -4,10 +4,11 @@
     </head>
     <body>
        <center> <h1>Hello {{username}}</h1>
-        <table border="1">
+        <table border="1" cellspacing="0" >
             <th>RANK</th>
             <th>Student Id</th>
-            <th>Student Name</th>
+            <th>First Name</th>
+            <th>Last Name</th>
             <th>Student Course</th>
             <th>Student Phone Number</th>
             <th>Java</th>
@@ -28,7 +29,8 @@
                 {% endfor %}
                 
                 <td>{{student_records.id}}</td>  
-                <td>{{student_records.StudentName}}</td>  
+                <td>{{student_records.FirstName}}</td>  
+                <td>{{student_records.LastName}}</td>  
                 <td>{{student_records.Course}}</td>  
                 <td>{{student_records.PhoneNumber}}</td> 
                 <td> {{subject.Java}} </td>
