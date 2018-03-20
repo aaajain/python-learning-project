@@ -1,17 +1,18 @@
 from django.db import models
 from datetime import datetime
-
+import logging
 # Create your models here.
 # Create your models here.
 class StudentDetail(models.Model):
-    StudentName=models.CharField(max_length=200)
+    #StudentName=models.CharField(max_length=200)
     Course= models.CharField(max_length=200)
     PhoneNumber= models.IntegerField()
     created_at= models.DateTimeField(default=datetime.now,blank=True)
     username=models.CharField(max_length=200,blank=True,null=True)
     password= models.CharField(max_length=200,blank=True,null=True)
     status= models.NullBooleanField(blank=True,null=True,default=None)
-
+    FirstName = models.CharField(max_length=200,blank=True,null=True)
+    LastName = models.CharField(max_length=200,blank=True,null=True)
     class Meta:
         verbose_name_plural="StudentDetail"
 
