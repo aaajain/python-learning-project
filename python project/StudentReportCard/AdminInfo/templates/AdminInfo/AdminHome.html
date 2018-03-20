@@ -5,6 +5,7 @@
     <body>
        <center> <h1>Hello {{username}}</h1>
         <table border="1">
+            <th>RANK</th>
             <th>Student Id</th>
             <th>Student Name</th>
             <th>Student Course</th>
@@ -15,26 +16,31 @@
             <th>Node</th>
             <th>Python</th>
             <th>Total Marks</th>
-
+            
+        {% for subject in subject_records %}
             {% for student_records in student_records%}
+            {% if subject.StudentDetailId.id == student_records.id %}
             <tr>
+                {% for key,value in rank.items %}
+                {% if key == student_records.id %}
+                <td>{{value}}</td>
+                 {% endif %}
+                {% endfor %}
+                
                 <td>{{student_records.id}}</td>  
                 <td>{{student_records.StudentName}}</td>  
                 <td>{{student_records.Course}}</td>  
                 <td>{{student_records.PhoneNumber}}</td> 
-                
-                {% for subject in subject_records %}
-                
-                    {% if subject.StudentDetailId.id == student_records.id %}
-                    <td> {{subject.Java}} </td>
-                    <td> {{subject.CSharp}} </td>
-                    <td> {{subject.Angular}} </td>
-                    <td> {{subject.Node}} </td>
-                    <td> {{subject.Python}} </td>
-                    <td> {{subject.TotalMarks}} </td>
-                    {% endif %}
-                {% endfor %}
+                <td> {{subject.Java}} </td>
+                <td> {{subject.CSharp}} </td>
+                <td> {{subject.Angular}} </td>
+                <td> {{subject.Node}} </td>
+                <td> {{subject.Python}} </td>
+                <td> {{subject.TotalMarks}} </td>
+            </tr>
+            {% endif %}
             {% endfor %}
+        {% endfor %}
             
         </table>
     </center>

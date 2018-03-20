@@ -13,35 +13,12 @@ def GenerateReportCard(request):
     student_records = StudentDetail.objects.filter(id=user_id)
     student_records= list(student_records)
     username=student_records[0].username
-    length= len(subject_records)
 
-
-    for i in range(length-1):
-        for elements in range(length-i-1):
-            if(subject_records[elements].TotalMarks < subject_records[elements+1].TotalMarks):
-                temp= subject_records[elements]
-                subject_records[elements]= subject_records[elements+1]
-                subject_records[elements+1]=temp
-                
-    #position= [ i for i in range(len(subject_records)) if subject_records[i].StudentDetailId.id==user_id]
-    #rank= position[0]+1
-    rankDict={}
-    x=length-1
-    rankIteration=0
-    while(rankIteration<=x):
-        print(rankIteration)
-        
-        if  rankIteration != x and  subject_records[rankIteration].TotalMarks== subject_records[rankIteration+1].TotalMarks:
-            rankDict[subject_records[rankIteration].StudentDetailId.id]= rankIteration+1
-            rankDict[subject_records[rankIteration+1].StudentDetailId.id]= rankIteration+1
-            rankIteration=rankIteration+2
-        else:
-            rankDict[subject_records[rankIteration].StudentDetailId.id]=rankIteration+1
-            rankIteration=rankIteration+1
-    rank= rankDict[user_id]
-    
-
-
+    rank= 1
+    user_marks= [ i.TotalMarks for i in subject_records if i.StudentDetailId.id == user_id]
+    for i in subject_records:
+        if i.TotalMarks> user_marks[0]:
+            rank+=1
 
     context={
         'subject_records':subject_records,
