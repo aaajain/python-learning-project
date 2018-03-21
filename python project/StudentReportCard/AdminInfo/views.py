@@ -1,42 +1,95 @@
-from django.shortcuts import render
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from AdminInfo.models import StudentDetail,SubjectDetail
 from django.http import HttpResponse
 from django.views.generic import View
-import json
 from .forms import loginForm
-from django.db.models import Q
+from interface import implements
+import StudentReportCard.recordsInterface
 
 #getStudentsRecords View- Checking login creadentials and diplaying students data
-def getStudentsRecords(request):
-    form= loginForm(request.POST)
-    username= request.POST.get('username')
-    password= request.POST.get('password')
-    login_records = StudentDetail.objects.filter(username=username,password=password)[:1]
-    login_details = list(login_records)
-    url=''
-
-    if(not login_records):
-        context={
-            'error': 'Invalid username or password'
-        }
-        url='AdminInfo/error.html'
-
-    else:
-        if(login_details[0].status):
-            student_records = StudentDetail.objects.exclude(id=login_details[0].id).order_by('id')
-            subject_records= SubjectDetail.objects.exclude(id=login_details[0].id).order_by('StudentDetailId')
-            url= 'AdminInfo/AdminHome.html'
+class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
+    user_id=0
+    username=''
+    def login(request):
+        form= loginForm(request.POST)
+        Admin.username= request.POST.get('username')
+        password= request.POST.get('password')
+        login_records = StudentDetail.objects.filter(username=Admin.username,password=password)[:1]
+        login_details = list(login_records)
+        url=''
         
+        context={
+            'username':Admin.username
+        }
+
+        if(not login_records):
+            context={
+                'error': 'Invalid username or password'
+            }
+            url='AdminInfo/error.html'
+
         else:
-            student_records=login_details
-            subject_records= SubjectDetail.objects.filter(StudentDetailId=login_details[0].id).order_by('StudentDetailId')
-            url='StudentInfo/StudentHome.html'
-            
+            Admin.user_id=login_details[0].id
+            request.session['id']=Admin.user_id
+            if(login_details[0].status):
+                details=Admin.getStudentsRecords()
+                url=details[0]
+                context=details[1]
+            else:
+                url='StudentInfo/StudentHome.html'
+
+        return render(request, url,context) 
+
+    def getStudentsRecords():
+        student_records = StudentDetail.objects.exclude(id=Admin.user_id).order_by('id')
+        subject_records= SubjectDetail.objects.exclude(id=Admin.user_id).order_by('StudentDetailId')
+        subject_records=list(subject_records)
+        url= 'AdminInfo/AdminHome.html'
+                
+        length= len(subject_records)
+        for i in range(length-1):
+            for elements in range(length-i-1):
+                if(subject_records[elements].TotalMarks < subject_records[elements+1].TotalMarks):
+                    temp= subject_records[elements]
+                    subject_records[elements]= subject_records[elements+1]
+                    subject_records[elements+1]=temp
+
+        rankDict={}
+        x=length-1
+        rankIteration=0
+        while(rankIteration<=x):
+                        
+            if  rankIteration != x and  subject_records[rankIteration].TotalMarks== subject_records[rankIteration+1].TotalMarks:
+                rankDict[subject_records[rankIteration].StudentDetailId.id]= rankIteration+1
+                rankDict[subject_records[rankIteration+1].StudentDetailId.id]= rankIteration+1
+                rankIteration=rankIteration+2
+            else:
+                rankDict[subject_records[rankIteration].StudentDetailId.id]=rankIteration+1
+                rankIteration=rankIteration+1
+                
         context = {
             'student_records': student_records,
             'subject_records': subject_records,
-            'username': username
+            'username': Admin.username,
+            'user_id':Admin.user_id,
+            'rank':rankDict 
             }
 
-    return render(request, url, context) 
+        return url,context 
+
+
+def insertStudentRecords(request):
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+    course = request.POST.get('course')
+    phone_number = request.POST.get('phone_number')
+    created_at = datetime.datetime.now()
+    username = (first_name[0] + last_name)
+    print(username)
+    password = id_generator(4,first_name + last_name)
+    print(created_at)
+    p1 = StudentDetail(Course = course, PhoneNumber=phone_number,
+    created_at = created_at, username = username, password = password,
+    status = '0',FirstName = first_name, LastName = last_name)
+    p1.save()
+    return render() 

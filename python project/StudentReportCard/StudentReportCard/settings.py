@@ -31,7 +31,7 @@ import logging.config
 LOGGING_CONFIG = None
 logging.config.dictConfig({
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
         'detail': {
             # exact format is not important, this is the minimum information
