@@ -5,6 +5,11 @@ from django.views.generic import View
 from .forms import loginForm
 from interface import implements
 import StudentReportCard.recordsInterface
+from xlrd import open_workbook
+import os
+import datetime
+import xlsxwriter
+import json
 
 #getStudentsRecords View- Checking login creadentials and diplaying students data
 class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
@@ -67,6 +72,24 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
                 rankDict[subject_records[rankIteration].StudentDetailId.id]=rankIteration+1
                 rankIteration=rankIteration+1
                 
+        data = StudentDetail.objects.filter(id=1).values()
+            
+        print(data[0]['id'])
+        pre = os.path.dirname(os.path.realpath(__file__))
+        fname = 'demo.xlsx'
+        path = os.path.join(pre, fname)        
+        workbook = xlsxwriter.Workbook(path)
+        wb = workbook.add_worksheet()
+        wb.write('A1',data[0]['id'])
+        wb.write('B1',data[0]['Course'])
+        wb.write('C1',data[0]['PhoneNumber'])
+        wb.write('D1',data[0]['username'])
+        wb.write('E1',data[0]['password'])
+        wb.write('F1',data[0]['status'])
+        wb.write('G1',data[0]['FirstName'])
+        wb.write('G1',data[0]['LastName'])
+        workbook.close()
+        
         context = {
             'student_records': student_records,
             'subject_records': subject_records,
@@ -77,6 +100,42 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
 
         return url,context 
 
+    def excelInsert(request):
+        pre = os.path.dirname(os.path.realpath(__file__))
+        fname = 'StudentData.xlsx'
+        path = os.path.join(pre, fname)
+        wb = open_workbook(path)
+        # Reading Data from the excel sheet
+        values = list()
+        data = list()
+        for s in wb.sheets():
+            number_row = s.nrows
+            number_col = s.ncols
+            for row in range(1,number_row):
+                 
+                for col in range(number_col):
+                    value  = (s.cell(row,col).value)
+                    try:
+                        value = str(int(value))
+                    except ValueError:
+                        pass
+                    finally:
+                        values.append(value)        
+                data.append(values)
+                values = []      
+        saveObj = StudentDetail(id = data[0][0],Course = data[0][1], PhoneNumber=data[0][2],
+                created_at = datetime.datetime.now(), FirstName = data[0][4], LastName = data[0][5],
+                password = data[0][6], status = '0',username = data[0][8])
+        saveObj.save()               
+#         for x in range(len(data)):
+#             for y in data[x]:
+#                 print(y)
+#                 
+#                 saveObj = StudentDetail(id = data[x][y],Course = data[x][y], PhoneNumber=data[x][y],
+#                 created_at = datetime.datetime.now(), username = data[x][y], password = data[x][y],
+#                 status = '0',FirstName = data[x][y], LastName = data[x][y])
+#                 saveObj.save()
+        return render(request, 'AdminInfo/NewRecord.html')
 
 def insertStudentRecords(request):
     first_name = request.POST.get('first_name')
