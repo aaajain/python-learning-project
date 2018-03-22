@@ -95,8 +95,7 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
             else:
                 rankDict[subject_records[rankIteration].StudentDetailId.id]=rankIteration+1
                 rankIteration=rankIteration+1
-                
- 		list1=['Java','CSharp','Angular','Node','Python'] 
+            list1=['Java','CSharp','Angular','Node','Python'] 
         data = StudentDetail.objects.filter(id=1).values()
             
         print(data[0]['id'])
