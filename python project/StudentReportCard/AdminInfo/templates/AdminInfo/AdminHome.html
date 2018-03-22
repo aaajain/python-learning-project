@@ -50,8 +50,20 @@
         {% endfor %}
             
         </table>
-    </center>
-    <br>
+    </center>	
+	<br><br>
+	<form action= {% url 'chkavg' %} method="POST"> {% csrf_token %}  
+    	Select Subject : 
+    	<select name="subname">
+    		{% for sub in subjects %}
+ 	  			<option value="{{sub}}">  
+    				{{sub}}
+ 				 </option>
+    		{% endfor %}
+ 		</select> 
+		<input type="submit" name="btnaverage" value="Calculate Average">
+		{{context}}
+		</form>
     <center>
     	<form action= {% url 'excelInsert' %} method="POST">{% csrf_token %}
 		    <input id="submit" type="submit" value="Click" />

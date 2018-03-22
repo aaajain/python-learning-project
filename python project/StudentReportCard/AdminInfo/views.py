@@ -5,8 +5,14 @@ from django.views.generic import View
 from .forms import loginForm
 from interface import implements
 import StudentReportCard.recordsInterface
+from django.template.context_processors import request
+from django.template import response
 from xlrd import open_workbook
+from django.db.models import Avg
+import subprocess
 import os
+import clr
+import ClassLibrary1
 import datetime
 import xlsxwriter
 import json
@@ -15,6 +21,24 @@ import json
 class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
     user_id=0
     username=''
+    def chkavg(request):
+        subjectname=request.POST.get('subname')
+        marks=  SubjectDetail.objects.all().aggregate(Avg(subjectname))
+        subprocess.call(['java','-jar','c:\\amahajan-0.0.1-SNAPSHOT.jar'])
+
+        clr.AddReference("c:\\abc\ClassLibrary1.dll")
+        frm=ClassLibrary1.Class1()
+        val=frm.printMessage()
+        print(val)
+#        
+        print(marks)
+        context = {
+            'SubjectName': subjectname,
+            'AverageMarks': marks
+           
+        }
+        url='AdminInfo/mypage.html'
+        return render(request, url,context)
     def login(request):
         form= loginForm(request.POST)
         Admin.username= request.POST.get('username')
@@ -72,7 +96,7 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
                 rankDict[subject_records[rankIteration].StudentDetailId.id]=rankIteration+1
                 rankIteration=rankIteration+1
                 
-
+ 		list1=['Java','CSharp','Angular','Node','Python'] 
         data = StudentDetail.objects.filter(id=1).values()
             
         print(data[0]['id'])
@@ -102,8 +126,8 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
             'username': Admin.username,
             'user_id':Admin.user_id,
             'college':collegeDetails,
-            'rank':rankDict 
-
+            'rank':rankDict, 
+			'subjects':list1		
             }
 
         return url,context 
