@@ -4,6 +4,11 @@
     </head>
     <body>
        <center> <h1>Hello {{username}}</h1>
+        <br><h2>
+            {% for i in college %}
+                {{i }}
+            {% endfor %}
+        </h2>
         <table border="1" cellspacing="0" >
             <th>RANK</th>
             <th>Student Id</th>

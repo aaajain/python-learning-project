@@ -67,12 +67,17 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
                 rankDict[subject_records[rankIteration].StudentDetailId.id]=rankIteration+1
                 rankIteration=rankIteration+1
                 
+        college= SingleToneCollege.__new__(SingleToneCollege,'MET', 'Bandra', 'Mumbai University')
+        
+        collegeDetails=college.collegeName, college.collgeAddr, college.collegeBoard
         context = {
             'student_records': student_records,
             'subject_records': subject_records,
             'username': Admin.username,
             'user_id':Admin.user_id,
+            'college':collegeDetails,
             'rank':rankDict 
+
             }
 
         return url,context 
@@ -93,3 +98,18 @@ def insertStudentRecords(request):
     status = '0',FirstName = first_name, LastName = last_name)
     p1.save()
     return render() 
+
+
+
+# Singleton/ClassVariableSingleton.py
+class SingleToneCollege(object):
+    __instance = None
+    def __new__(cls, collegeName, collgeAddr, collegeBoard ):
+        if SingleToneCollege.__instance is None:
+            SingleToneCollege.__instance = object.__new__(cls)
+            SingleToneCollege.__instance.collegeName = collegeName
+            SingleToneCollege.__instance.collgeAddr= collgeAddr
+            SingleToneCollege.__instance.collegeBoard= collegeBoard
+        return SingleToneCollege.__instance 
+
+
