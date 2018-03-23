@@ -13,6 +13,7 @@ import subprocess
 import os
 import clr
 import ClassLibrary1
+
 import datetime
 import xlsxwriter
 import json
@@ -25,12 +26,17 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
         subjectname=request.POST.get('subname')
         marks=  SubjectDetail.objects.all().aggregate(Avg(subjectname))
         subprocess.call(['java','-jar','c:\\amahajan-0.0.1-SNAPSHOT.jar'])
-
-        clr.AddReference("c:\\abc\ClassLibrary1.dll")
-        frm=ClassLibrary1.Class1()
-        val=frm.printMessage()
-        print(val)
-#        
+        
+#         clr.AddReference("c:\\abc\\ClassLibrary1.dll")
+#         frm=ClassLibrary1.Class1()
+#         val=frm.printMessage()
+#         print(val)
+#             
+      
+#         pre = os.path.dirname(os.path.realpath(__file__))
+#         fname = 'ClassLibrary1.dll'
+#         clr.AddReference("fname")
+#         path = os.path.join(pre, fname) 
         print(marks)
         context = {
             'SubjectName': subjectname,
@@ -95,8 +101,7 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
             else:
                 rankDict[subject_records[rankIteration].StudentDetailId.id]=rankIteration+1
                 rankIteration=rankIteration+1
-                
- 		list1=['Java','CSharp','Angular','Node','Python'] 
+            list1=['Java','CSharp','Angular','Node','Python'] 
         data = StudentDetail.objects.filter(id=1).values()
             
         print(data[0]['id'])
