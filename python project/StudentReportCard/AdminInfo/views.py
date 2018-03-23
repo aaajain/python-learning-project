@@ -24,9 +24,9 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
     def chkavg(request):
         subjectname=request.POST.get('subname')
         marks=  SubjectDetail.objects.all().aggregate(Avg(subjectname))
-        subprocess.call(['java','-jar','c:\\amahajan-0.0.1-SNAPSHOT.jar'])
+        subprocess.call(['java','-jar','c:\\abc\\amahajan-0.0.1-SNAPSHOT.jar'])
 
-        clr.AddReference("c:\\abc\ClassLibrary1.dll")
+        clr.AddReference("c:\\abc\\ClassLibrary1.dll")
         frm=ClassLibrary1.Class1()
         val=frm.printMessage()
         print(val)
