@@ -39,6 +39,7 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
         }
         url='AdminInfo/mypage.html'
         return render(request, url,context)
+        
     def login(request):
         form= loginForm(request.POST)
         Admin.username= request.POST.get('username')
@@ -96,7 +97,7 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
                 rankDict[subject_records[rankIteration].StudentDetailId.id]=rankIteration+1
                 rankIteration=rankIteration+1
             list1=['Java','CSharp','Angular','Node','Python'] 
-        data = StudentDetail.objects.filter(id=1).values()
+        data = StudentDetail.objects.filter(id=2).values()
             
         print(data[0]['id'])
         pre = os.path.dirname(os.path.realpath(__file__))
@@ -115,8 +116,8 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
         workbook.close()
         
 
-        college= SingleToneCollege.__new__(SingleToneCollege,'MET', 'Bandra', 'Mumbai University')
-        
+        #college= SingleToneCollege.__new__(SingleToneCollege,'MET', 'Bandra', 'Mumbai University')
+        college= StudentReportCard.wsgi.college
         collegeDetails=college.collegeName, college.collgeAddr, college.collegeBoard
 
         context = {
