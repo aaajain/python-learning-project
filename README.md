@@ -9,7 +9,8 @@ steps after project checkout:-
 2. Go in the project directory i.e python project\StudentReportCard
 3. Open cmd in above directory and type following command:-
                 pip install -r requirement.txt
-               
+4. Then to run project type following command:-
+                python manage.py runserver
  
 steps to follow when new dependencies added by individual
 
