@@ -110,23 +110,10 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
                 rankDict[subject_records[rankIteration].StudentDetailId.id]=rankIteration+1
                 rankIteration=rankIteration+1
             list1=['Java','CSharp','Angular','Node','Python'] 
-        data = StudentDetail.objects.filter(id=1).values()
             
-        print(data[0]['id'])
-        pre = os.path.dirname(os.path.realpath(__file__))
-        fname = 'demo.xlsx'
-        path = os.path.join(pre, fname)        
-        workbook = xlsxwriter.Workbook(path)
-        wb = workbook.add_worksheet()
-        wb.write('A1',data[0]['id'])
-        wb.write('B1',data[0]['Course'])
-        wb.write('C1',data[0]['PhoneNumber'])
-        wb.write('D1',data[0]['username'])
-        wb.write('E1',data[0]['password'])
-        wb.write('F1',data[0]['status'])
-        wb.write('G1',data[0]['FirstName'])
-        wb.write('G1',data[0]['LastName'])
-        workbook.close()
+        data = StudentDetail.objects.filter(id=1).values()
+        writeExcel(data)    
+        
         
 
         college= SingleToneCollege.__new__(SingleToneCollege,'MET', 'Bandra', 'Mumbai University')
@@ -181,6 +168,23 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
 #                 status = '0',FirstName = data[x][y], LastName = data[x][y])
 #                 saveObj.save()
         return render(request, 'AdminInfo/NewRecord.html')
+
+def writeExcel(data):
+    print(data[0]['id'])
+    pre = os.path.dirname(os.path.realpath(__file__))
+    fname = 'demo.xlsx'
+    path = os.path.join(pre, fname)        
+    workbook = xlsxwriter.Workbook(path)
+    wb = workbook.add_worksheet()
+    wb.write('A1',data[0]['id'])
+    wb.write('B1',data[0]['Course'])
+    wb.write('C1',data[0]['PhoneNumber'])
+    wb.write('D1',data[0]['username'])
+    wb.write('E1',data[0]['password'])
+    wb.write('F1',data[0]['status'])
+    wb.write('G1',data[0]['FirstName'])
+    wb.write('G1',data[0]['LastName'])
+    workbook.close()
 
 def insertStudentRecords(request):
     first_name = request.POST.get('first_name')
