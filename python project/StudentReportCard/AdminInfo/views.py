@@ -12,11 +12,14 @@ from django.db.models import Avg
 import subprocess
 import os
 import clr
-import ClassLibrary1
+#import ClassLibrary1
 import datetime
 import xlsxwriter
 import json
-
+import string
+from AdminInfo.FactoryClass import factory_object_creator
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+ return ''.join(random.choice(chars) for _ in range(size))
 #getStudentsRecords View- Checking login creadentials and diplaying students data
 class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
     user_id=0
@@ -40,6 +43,8 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
         url='AdminInfo/mypage.html'
         return render(request, url,context)
     def login(request):
+        user_type = factory_object_creator()
+        print(user_type.getType('admin'))
         form= loginForm(request.POST)
         Admin.username= request.POST.get('username')
         password= request.POST.get('password')
@@ -66,8 +71,8 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
                 context=details[1]
             else:
                 url='StudentInfo/StudentHome.html'
-
-        return render(request, url,context) 
+        
+        return render(request, url,context)
 
     def getStudentsRecords():
         student_records = StudentDetail.objects.exclude(id=Admin.user_id).order_by('id')

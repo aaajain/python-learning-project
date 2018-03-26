@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^login/$',views.Admin.login, name='login'),
        url(r'^checkavergage/$',views.Admin.chkavg, name='chkavg'),
        url(r'^excelInsert/$',views.Admin.excelInsert, name='excelInsert'),
-    url(r'^insertStudent/$',views.insertStudentRecords, name='insertStudentRecords')
+    	url(r'^insertStudent/$',views.insertStudentRecords, name='insertStudentRecords')
     #url(r'^bubbleSort/$',views.bubbleSort, name='bubbleSort')
 
 ]
