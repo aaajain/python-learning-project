@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -115,10 +116,10 @@ WSGI_APPLICATION = 'StudentReportCard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'python-learning-project',
-        'USER':'postgres',
-        'PASSWORD': 'ketki',
-        'HOST':'localhost',
+        'NAME': 'athenepg',
+        'USER':'KRandhir',
+        'PASSWORD': 'Chenoa#4321',
+        'HOST':'athenepg.cs39bneby6iw.us-east-1.rds.amazonaws.com',
         'PORT':'5432'
     }
 }
@@ -156,8 +157,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    #'/var/www/static/',
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
+

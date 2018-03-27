@@ -17,13 +17,20 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include,url
 from django.views.generic import TemplateView
-
+from django.conf import settings
+from django.conf.urls.static import static
  
-
+#print(STATIC_URL)
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^StudentInfo/',include('StudentInfo.urls')),
     url(r'^AdminInfo/',include('AdminInfo.urls')),
-    url(r'^$', TemplateView.as_view(template_name="AdminInfo/Login.html"), name="Login"),
+    url(r'^$', TemplateView.as_view(template_name="AdminInfo/login.html"), name="Login")
 
 ]
+'''if settings.DEBUG:
+    urlpatterns = [
+        # ... the rest of your URLconf goes here ...
+    ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+    #STATIC_ROOT = os.path.join((os.path.dirname(BASE_DIR),"static_cdn")'''
