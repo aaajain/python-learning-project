@@ -19,12 +19,22 @@ import json
 import string
 import random
 from AdminInfo.FactoryClass import factory_object_creator
+from AdminInfo.errorExc import ErrorExc
+
+
+#Generates a random password while creating user
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
  return ''.join(random.choice(chars) for _ in range(size))
-#getStudentsRecords View- Checking login creadentials and diplaying students data
+
+'''
+Admin View- Checking login creadentials and diplaying students data
+'''
 class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
     user_id=0
     username=''
+    
+    #1. calculates average for particualr subject 
+    #2. Native programming java and .net
     def chkavg(request):
         subjectname=request.POST.get('subname')
         marks=  SubjectDetail.objects.all().aggregate(Avg(subjectname))
@@ -44,6 +54,7 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
         url='AdminInfo/mypage.html'
         return render(request, url,context)
         
+    #login method- checking login credentials and directing to particular page
     def login(request):
         user_type = factory_object_creator()
         print(user_type.getType('admin'))
@@ -59,10 +70,16 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
         }
 
         if(not login_records):
-            context={
-                'error': 'Invalid username or password'
-            }
-            url='AdminInfo/error.html'
+            try:
+                context={
+                    'error': 'Invalid username or password',
+                    'loginFail':True
+                }
+                url='AdminInfo/Login.html'
+                raise ErrorExc('Invalid Credentials')
+            
+            except Exception:
+                return render(request, url,context)
 
         else:
             Admin.user_id=login_details[0].id
@@ -76,12 +93,14 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
         
         return render(request, url,context)
 
+    #retrieving students record to display on admin page
     def getStudentsRecords():
         student_records = StudentDetail.objects.exclude(id=Admin.user_id).order_by('id')
         subject_records= SubjectDetail.objects.exclude(id=Admin.user_id).order_by('StudentDetailId')
         subject_records=list(subject_records)
         url= 'AdminInfo/AdminHome.html'
                 
+        #bubble sort on total marks
         length= len(subject_records)
         for i in range(length-1):
             for elements in range(length-i-1):
@@ -90,6 +109,7 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
                     subject_records[elements]= subject_records[elements+1]
                     subject_records[elements+1]=temp
 
+        #rank calculation
         rankDict={}
         x=length-1
         rankIteration=0
@@ -108,7 +128,6 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
         data = StudentDetail.objects.filter(id=2).values()
         writeExcel(data)
 
-        #college= SingleToneCollege.__new__(SingleToneCollege,'MET', 'Bandra', 'Mumbai University')
         college= StudentReportCard.wsgi.college
         collegeDetails=college.collegeName, college.collgeAddr, college.collegeBoard
 
@@ -124,6 +143,7 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
 
         return url,context 
 
+    #inserting data to database using excel file
     def excelInsert(request):
         pre = os.path.dirname(os.path.realpath(__file__))
         fname = 'StudentData.xlsx'
@@ -161,6 +181,7 @@ class Admin(implements(StudentReportCard.recordsInterface.recordsInterface)):
 #                 saveObj.save()
         return render(request, 'AdminInfo/NewRecord.html')
     
+#writing data to excel file
 def writeExcel(data):
     data = data
     print(data[0]['id'])
@@ -179,6 +200,7 @@ def writeExcel(data):
     wb.write('G1',data[0]['LastName'])
     workbook.close()
 
+#insert new user
 def insertStudentRecords(request):
     first_name = request.POST.get('first_name')
     last_name = request.POST.get('last_name')
@@ -197,7 +219,7 @@ def insertStudentRecords(request):
 
 
 
-# Singleton/ClassVariableSingleton.py
+# Singleton class for college details
 class SingleToneCollege(object):
     __instance = None
     def __new__(cls, collegeName, collgeAddr, collegeBoard ):

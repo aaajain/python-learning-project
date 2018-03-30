@@ -11,6 +11,8 @@ class Student(implements(StudentReportCard.recordsInterface.recordsInterface)):
     
     user_id=0
     username=''
+
+    #function for generating report card for individual student
     def GenerateReportCard(request):
         
         Student.user_id= request.session['id']
@@ -20,6 +22,7 @@ class Student(implements(StudentReportCard.recordsInterface.recordsInterface)):
         return render(request, url,context)
 
 
+    #retrieve students data for individual student
     def getStudentsRecords():
         
         subject_records= SubjectDetail.objects.order_by('StudentDetailId')
@@ -28,6 +31,7 @@ class Student(implements(StudentReportCard.recordsInterface.recordsInterface)):
         student_records= list(student_records)
         Student.username=student_records[0].username
 
+        #rank calculation
         rank= 1
         user_marks= [ i.TotalMarks for i in subject_records if i.StudentDetailId.id ==Student.user_id]
         for i in subject_records:
